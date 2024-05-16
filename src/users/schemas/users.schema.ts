@@ -18,6 +18,9 @@ export class User {
   @Prop()
   price: number;
 
+  @Prop()
+  imageUrl: string[];
+
   // id: '1',
   //       title: 'Node.js 101',
   //       description: '웹 개발로 알아보는 백엔드 자바스크립트의 이해',

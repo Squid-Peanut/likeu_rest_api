@@ -1,8 +1,19 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import {
+  Bind,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Res,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
 import { UsersService } from './users/users.service';
 import { NoticeService } from './notice/notice.service';
+import { multerDiskOptions } from './users/multer/multer.options';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 export class AppController {
@@ -18,13 +29,24 @@ export class AppController {
   }
 
   @Post('/input_user')
+  @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
+  @Bind(UploadedFiles())
   postUsers(
+    file: File[],
     @Body() body: { description: string; price: number },
     @Res() res: Response,
   ): any {
-    this.usersService.postUsers(body.description, body.price);
+    this.usersService.postUsers(body.description, body.price, file);
     return res.redirect('/');
   }
+
+  // @Post('file_upload')
+  // @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
+  // @Bind(UploadedFiles())
+  // @Redirect('/')
+  // uploadFileDisk(file: File[]) {
+  //   console.log(file);
+  // }
 
   @Post('/update_user')
   updateUser(

@@ -7,11 +7,13 @@ export class AppService {
     <h1>Rest API 테스트 사이트 입니다.</h1> \
     <br><br>\
     <h2>Create users data</h2>\
-    <form method="post" action="/input_user">\
+    <form method="post" action="/input_user" enctype="multipart/form-data">\
     description \
     <input type="text" name="description"><br>\
     price \
     <input type="text" name="price"> <br>\
+    file\
+    <input type="file" name="file" accept="image/png, image/jpeg" multiple><br>\
     <input type="submit">\
     </form><br><br>\
     <h2>Update users data</h2>\
