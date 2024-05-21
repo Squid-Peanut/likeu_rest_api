@@ -2,7 +2,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { existsSync, mkdirSync } from 'fs';
 import { diskStorage } from 'multer';
 
-export const multerDiskOptions = {
+export const noticeMulterDiskOptions = {
   /**
    * @author Ryan
    * @description 클라이언트로 부터 전송 받은 파일 정보를 필터링 한다

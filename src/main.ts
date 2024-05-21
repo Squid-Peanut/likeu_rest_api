@@ -11,6 +11,10 @@ async function bootstrap() {
     '/users',
     express.static(path.join(__dirname, '..', 'src', 'users', 'uploads')),
   );
+  app.use(
+    '/notice',
+    express.static(path.join(__dirname, '..', 'src', 'notice', 'uploads')),
+  );
   const config = new DocumentBuilder()
     .setTitle('Users API')
     .setDescription('The is a sample REST API')

@@ -12,7 +12,8 @@ import { AppService } from './app.service';
 import { Response } from 'express';
 import { UsersService } from './users/users.service';
 import { NoticeService } from './notice/notice.service';
-import { multerDiskOptions } from './users/multer/multer.options';
+import { usersMulterDiskOptions } from './users/multer/multer.options';
+import { noticeMulterDiskOptions } from './notice/multer/multer.options';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller()
@@ -29,7 +30,7 @@ export class AppController {
   }
 
   @Post('/input_user')
-  @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
+  @UseInterceptors(FilesInterceptor('file', null, usersMulterDiskOptions))
   @Bind(UploadedFiles())
   postUsers(
     file: File[],
@@ -50,7 +51,7 @@ export class AppController {
   }
 
   @Post('/input_notice')
-  @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
+  @UseInterceptors(FilesInterceptor('file', null, noticeMulterDiskOptions))
   @Bind(UploadedFiles())
   postNotice(
     file: File[],
