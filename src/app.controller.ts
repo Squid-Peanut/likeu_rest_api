@@ -40,14 +40,6 @@ export class AppController {
     return res.redirect('/');
   }
 
-  // @Post('file_upload')
-  // @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
-  // @Bind(UploadedFiles())
-  // @Redirect('/')
-  // uploadFileDisk(file: File[]) {
-  //   console.log(file);
-  // }
-
   @Post('/update_user')
   updateUser(
     @Body() body: { id: number; description: string; price: number },
@@ -58,11 +50,14 @@ export class AppController {
   }
 
   @Post('/input_notice')
+  @UseInterceptors(FilesInterceptor('file', null, multerDiskOptions))
+  @Bind(UploadedFiles())
   postNotice(
+    file: File[],
     @Body() body: { title: string; text: string },
     @Res() res: Response,
   ): any {
-    this.noticeService.postNotice(body.title, body.text);
+    this.noticeService.postNotice(body.title, body.text, file);
     return res.redirect('/');
   }
 

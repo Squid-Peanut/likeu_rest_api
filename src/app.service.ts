@@ -12,7 +12,7 @@ export class AppService {
     <input type="text" name="description"><br>\
     price \
     <input type="text" name="price"> <br>\
-    file\
+    Image file\
     <input type="file" name="file" accept="image/png, image/jpeg" multiple><br>\
     <input type="submit">\
     </form><br><br>\
@@ -27,11 +27,13 @@ export class AppService {
     <input type="submit">\
     </form><br><br>\
     <h2>Create notice data</h2>\
-    <form method="post" action="/input_notice">\
+    <form method="post" action="/input_notice" enctype="multipart/form-data">\
     title \
     <input type="text" name="title"><br>\
     text \
     <input type="text" name="text"> <br>\
+    Image file\
+    <input type="file" name="file" accept="image/png, image/jpeg" multiple><br>\
     <input type="submit">\
     </form><br><br>\
     <h2>Update notice data</h2>\
