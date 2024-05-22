@@ -80,10 +80,6 @@ export class UsersService {
     description: string,
     price: number,
   ): Promise<any> {
-    const search = await this.userModel.findOne({ id }).lean();
-    if (search != undefined) {
-      const result = await this.userModel.updateOne({ id, description, price });
-      return result;
-    }
+    return await this.userModel.updateOne({ id }, { description, price });
   }
 }

@@ -32,42 +32,74 @@ export class AppController {
   @Post('/input_user')
   @UseInterceptors(FilesInterceptor('file', null, usersMulterDiskOptions))
   @Bind(UploadedFiles())
-  postUsers(
+  async postUsers(
     file: File[],
     @Body() body: { description: string; price: number },
     @Res() res: Response,
-  ): any {
-    this.usersService.postUsers(body.description, body.price, file);
+  ): Promise<any> {
+    const price = Number(body.price);
+    if (isNaN(price))
+      return res.send(
+        '<script>alert("id 또는 price의 형식이 숫자가 아닙니다."); window.location.href="/";</script>',
+      );
+    await this.usersService.postUsers(body.description, body.price, file);
     return res.redirect('/');
   }
 
   @Post('/update_user')
-  updateUser(
+  async updateUser(
     @Body() body: { id: number; description: string; price: number },
     @Res() res: Response,
-  ): any {
-    this.usersService.updateUsers(body.id, body.description, body.price);
-    return res.redirect('/');
+  ): Promise<any> {
+    const id = Number(body.id);
+    const price = Number(body.price);
+    if (isNaN(id) || isNaN(price))
+      return res.send(
+        '<script>alert("id 또는 price의 형식이 숫자가 아닙니다."); window.location.href="/";</script>',
+      );
+    const result = await this.usersService.updateUsers(
+      body.id,
+      body.description,
+      body.price,
+    );
+    if (result.modifiedCount == 1) return res.redirect('/');
+    else
+      return res.send(
+        '<script>alert("존재하지 않는 데이터입니다."); window.location.href="/";</script>',
+      );
   }
 
   @Post('/input_notice')
   @UseInterceptors(FilesInterceptor('file', null, noticeMulterDiskOptions))
   @Bind(UploadedFiles())
-  postNotice(
+  async postNotice(
     file: File[],
     @Body() body: { title: string; text: string },
     @Res() res: Response,
-  ): any {
-    this.noticeService.postNotice(body.title, body.text, file);
+  ): Promise<any> {
+    await this.noticeService.postNotice(body.title, body.text, file);
     return res.redirect('/');
   }
 
   @Post('/update_notice')
-  updateNotice(
+  async updateNotice(
     @Body() body: { id: number; title: string; text: string },
     @Res() res: Response,
-  ): any {
-    this.noticeService.updateNotice(body.id, body.title, body.text);
-    return res.redirect('/');
+  ): Promise<any> {
+    const id = Number(body.id);
+    if (isNaN(id))
+      return res.send(
+        '<script>alert("id의 형식이 숫자가 아닙니다."); window.location.href="/";</script>',
+      );
+    const result = await this.noticeService.updateNotice(
+      body.id,
+      body.title,
+      body.text,
+    );
+    if (result.modifiedCount == 1) return res.redirect('/');
+    else
+      return res.send(
+        '<script>alert("존재하지 않는 데이터입니다."); window.location.href="/";</script>',
+      );
   }
 }

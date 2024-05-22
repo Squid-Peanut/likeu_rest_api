@@ -63,35 +63,7 @@ export class NoticeService {
     return result;
   }
 
-  // async postUsers(
-  //   description: string,
-  //   price: number,
-  //   file: any[],
-  // ): Promise<any> {
-  //   const imageUrl: string[] = [];
-  //   let id = (await this.userModel.find().lean()).length;
-  //   id += 1;
-  //   for (let i = 0; i < file.length; i++) {
-  //     imageUrl.push(`${process.env.HOST_URL}/users/${file[i].originalname}`);
-  //   }
-
-  //   console.log(imageUrl);
-
-  //   const result = await this.userModel.create({
-  //     id,
-  //     description,
-  //     price,
-  //     imageUrl,
-  //   });
-  //   if (!result) throw new NotFoundException();
-  //   return result;
-  // }
-
   async updateNotice(id: number, title: string, text: string): Promise<any> {
-    const search = await this.noticeModel.findOne({ id }).lean();
-    if (search != undefined) {
-      const result = await this.noticeModel.updateOne({ id, title, text });
-      return result;
-    }
+    return await this.noticeModel.updateOne({ id }, { title, text });
   }
 }
