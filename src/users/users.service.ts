@@ -47,7 +47,7 @@ export class UsersService {
     if (imageUrl == 'true') {
       const result = await this.userModel
         .find({ id })
-        .select('-_id -__v imageUrl')
+        .select('-_id imageUrl')
         .lean();
       if (!result) throw new NotFoundException();
       return result;

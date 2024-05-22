@@ -49,7 +49,7 @@ export class NoticeService {
     if (imageUrl == 'true') {
       const result = await this.noticeModel
         .find({ id })
-        .select('-_id -__v imageUrl')
+        .select('-_id imageUrl')
         .lean();
       if (!result) throw new NotFoundException();
       return result;
