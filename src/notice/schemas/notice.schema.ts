@@ -8,12 +8,11 @@ export type NoticeDocument = Notice & Document;
 
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class Notice {
-  @Prop()
+  @Prop({ unique: true })
   id: number;
 
   @Prop()
   title: string;
-  static id: any;
 
   @Prop()
   text: string;

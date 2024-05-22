@@ -10,25 +10,37 @@ export class NoticeService {
   ) {}
 
   async getNotice_id(id: string): Promise<any> {
-    const result = await this.noticeModel.find({ id }).lean();
+    const result = await this.noticeModel
+      .find({ id })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
   async getNotice_title(title: string): Promise<any> {
-    const result = await this.noticeModel.find({ title }).lean();
+    const result = await this.noticeModel
+      .find({ title })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
   async getNotice_text(text: string): Promise<any> {
-    const result = await this.noticeModel.find({ text }).lean();
+    const result = await this.noticeModel
+      .find({ text })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
   async getNotice_title_text(title: string, text: string): Promise<any> {
-    const result = await this.noticeModel.find({ title, text }).lean();
+    const result = await this.noticeModel
+      .find({ title, text })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
@@ -37,7 +49,7 @@ export class NoticeService {
     if (imageUrl == 'true') {
       const result = await this.noticeModel
         .find({ id })
-        .select('imageUrl')
+        .select('-_id -__v imageUrl')
         .lean();
       if (!result) throw new NotFoundException();
       return result;
@@ -45,7 +57,7 @@ export class NoticeService {
   }
 
   async getNotices(): Promise<any> {
-    const result = await this.noticeModel.find().lean();
+    const result = await this.noticeModel.find().select('-_id -__v').lean();
     if (!result) throw new NotFoundException();
     return result;
   }

@@ -8,19 +8,25 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async getUser_id(id: string): Promise<any> {
-    const result = await this.userModel.find({ id }).lean();
+    const result = await this.userModel.find({ id }).select('-_id -__v').lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
   async getUser_description(description: string): Promise<any> {
-    const result = await this.userModel.find({ description }).lean();
+    const result = await this.userModel
+      .find({ description })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
   async getUser_price(price: number): Promise<any> {
-    const result = await this.userModel.find({ price }).lean();
+    const result = await this.userModel
+      .find({ price })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
@@ -29,7 +35,10 @@ export class UsersService {
     description: string,
     price: number,
   ): Promise<any> {
-    const result = await this.userModel.find({ description, price }).lean();
+    const result = await this.userModel
+      .find({ description, price })
+      .select('-_id -__v')
+      .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
@@ -38,7 +47,7 @@ export class UsersService {
     if (imageUrl == 'true') {
       const result = await this.userModel
         .find({ id })
-        .select('imageUrl')
+        .select('-_id -__v imageUrl')
         .lean();
       if (!result) throw new NotFoundException();
       return result;
@@ -46,7 +55,7 @@ export class UsersService {
   }
 
   async getUsers(): Promise<any> {
-    const result = await this.userModel.find().lean();
+    const result = await this.userModel.find().select('-_id -__v').lean();
     if (!result) throw new NotFoundException();
     return result;
   }

@@ -8,12 +8,11 @@ export type UserDocument = User & Document;
 
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class User {
-  @Prop()
+  @Prop({ unique: true })
   id: number;
 
   @Prop()
   description: string;
-  static id: any;
 
   @Prop()
   price: number;
