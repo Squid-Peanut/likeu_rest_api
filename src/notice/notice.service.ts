@@ -45,15 +45,13 @@ export class NoticeService {
     return result;
   }
 
-  async getNotice_imageUrl(id: string, imageUrl: string): Promise<any> {
-    if (imageUrl == 'true') {
-      const result = await this.noticeModel
-        .find({ id })
-        .select('-_id imageUrl')
-        .lean();
-      if (!result) throw new NotFoundException();
-      return result;
-    } else throw new NotFoundException();
+  async getNotice_imageUrl(id: string): Promise<any> {
+    const result = await this.noticeModel
+      .find({ id })
+      .select('-_id imageUrl')
+      .lean();
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
   async getNotices(): Promise<any> {
@@ -67,10 +65,17 @@ export class NoticeService {
     let id = (await this.noticeModel.find().lean()).length;
     id += 1;
     for (let i = 0; i < file.length; i++) {
-      imageUrl.push(`${process.env.HOST_URL}/notice/${file[i].originalname}`);
+      const imgUrl = `${process.env.HOST_URL}/notice/${file[i].originalname}`;
+      const imgToBase64 = Buffer.from(imgUrl).toString('base64');
+      imageUrl.push(`data:${file[i].mimetype};base64,${imgToBase64}`);
     }
-    console.log(imageUrl);
-    const result = await this.noticeModel.create({ id, title, text, imageUrl });
+    console.log(file);
+    const result = await this.noticeModel.create({
+      id,
+      title,
+      text,
+      imageUrl,
+    });
     if (!result) throw new NotFoundException();
     return result;
   }
