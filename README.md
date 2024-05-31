@@ -24,12 +24,13 @@ Nest.js를 이용해서 Rest API를 구축
 
 /notice 로 접속시 notice에 대한 모든 데이터 출력
 
-- 쿼리 스트링
-  - id(number) : 해당 아이디의 데이터 검색
-    - ex) /notice?id=1 또는 /notice/?id=1
-  - title(string) : 해당 글 제목의 데이터 검색
-    - ex) /notice?title=hello 또는 /notice/?title=hello
-  - text(string) : 해당 글 내용의 데이터 검색
-    - ex) /notice?text=world 또는 /notice/?text=world
-  - imageUrl(boolean) : 사진경로만 검색
-    - ex) /notice?id=1&imageUrl=true 또는 /notice/?id=1&imageUrl=true
+- 사용법
+  - id(숫자, number) 검색
+    - 해당 id를 검색
+    - ex) http://13.125.195.45:3000/notice/id/1
+  - title(문자형, string) 검색
+    - 해당 title을 검색
+    - ex) http://13.125.195.45:3000/notice/title/테스트제목
+  - imageUrl(숫자, number) 검색
+    - 해당 ImageUrl을 검색, 입력값은 id를 입력함
+    - ex) http://13.125.195.45:3000/notice/imageUrl/1
