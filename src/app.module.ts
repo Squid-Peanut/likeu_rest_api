@@ -6,9 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from './users/schemas/users.schema';
 import { NoticeModule } from './notice/notice.module';
+// import { KakaoModule } from './kakao/kakao.module';
+import { AuthModule } from './auth/auth.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     UsersModule,
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
@@ -19,6 +23,8 @@ import { NoticeModule } from './notice/notice.module';
       inject: [ConfigService],
     }),
     NoticeModule,
+    // KakaoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

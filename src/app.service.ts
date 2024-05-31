@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return '\
+    return `\
     <h1>Rest API 테스트 사이트 입니다.</h1> \
     <br><br>\
     <h2>Create users data</h2>\
@@ -45,6 +45,11 @@ export class AppService {
     text \
     <input type="text" name="text"> <br>\
     <input type="submit">\
-    </form><br><br>';
+    </form><br><br>\
+    <h1>로그인</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/kakao/login'" />\
+    <br><br>\
+    <h1>로그아웃</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/kakao/logout'" />`;
   }
 }

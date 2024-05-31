@@ -15,6 +15,7 @@ import { NoticeService } from './notice/notice.service';
 import { usersMulterDiskOptions } from './users/multer/multer.options';
 import { noticeMulterDiskOptions } from './notice/multer/multer.options';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { AuthService } from './auth/auth.service';
 
 @Controller()
 export class AppController {
@@ -22,6 +23,7 @@ export class AppController {
     private readonly appService: AppService,
     private readonly usersService: UsersService,
     private readonly noticeService: NoticeService,
+    private readonly authService: AuthService,
   ) {}
 
   @Get()
@@ -101,5 +103,21 @@ export class AppController {
       return res.send(
         '<script>alert("존재하지 않는 데이터입니다."); window.location.href="/";</script>',
       );
+  }
+
+  @Get('/kakao/login')
+  async getKakaoLogin(@Res() res: Response) {
+    const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${process.env.CODE_REDIRECT_URI}`;
+    res.redirect(url);
+  }
+
+  @Get('/kakao/logout')
+  async getKakaoLogout(@Res() res: Response) {
+    const result = await this.authService.KakaoLogout();
+    if (!result)
+      return res.send(
+        '<script>alert("로그아웃이 실패했습니다."); window.location.href="/";</script>',
+      );
+    else return res.redirect('/');
   }
 }

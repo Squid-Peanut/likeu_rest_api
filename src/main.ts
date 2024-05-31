@@ -13,6 +13,11 @@ async function bootstrap() {
   });
 
   app.use(
+    '/static',
+    express.static(path.join(__dirname, '..', 'src', 'static')),
+  );
+
+  app.use(
     '/users',
     express.static(path.join(__dirname, '..', 'src', 'users', 'uploads')),
   );
