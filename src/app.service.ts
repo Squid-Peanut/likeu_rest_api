@@ -46,10 +46,19 @@ export class AppService {
     <input type="text" name="text"> <br>\
     <input type="submit">\
     </form><br><br>\
-    <h1>로그인</h1>\
+    <h1>카카오 로그인</h1>\
     <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/kakao/login'" />\
     <br><br>\
-    <h1>로그아웃</h1>\
-    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/kakao/logout'" />`;
+    <h1>카카오 로그아웃</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/kakao/logout'" />\
+    <br><br>\
+    <h1>구글 로그인</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/google/login'" />\
+    <br><br>\
+    <h1>구글 로그아웃</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/google/logout'" />\
+    <br><br>\
+    <h1>세션확인</h1>\
+    <img src="/static/kakao_login_medium_narrow.png" alt="카카오 로그인" onclick="location.href='/session'" />`;
   }
 }

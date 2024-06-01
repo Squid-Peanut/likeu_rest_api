@@ -4,8 +4,11 @@ import {
   Controller,
   Get,
   Post,
+  Req,
   Res,
+  Session,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AppService } from './app.service';
@@ -16,6 +19,8 @@ import { usersMulterDiskOptions } from './users/multer/multer.options';
 import { noticeMulterDiskOptions } from './notice/multer/multer.options';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AuthService } from './auth/auth.service';
+import { GoogleAuthGuard } from './auth/auth.gard';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {
@@ -107,17 +112,29 @@ export class AppController {
 
   @Get('/kakao/login')
   async getKakaoLogin(@Res() res: Response) {
-    const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${process.env.CODE_REDIRECT_URI}`;
+    const url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.KAKAO_API_KEY}&redirect_uri=${process.env.KAKAO_CODE_REDIRECT_URI}`;
     res.redirect(url);
   }
 
   @Get('/kakao/logout')
   async getKakaoLogout(@Res() res: Response) {
-    const result = await this.authService.KakaoLogout();
-    if (!result)
-      return res.send(
-        '<script>alert("로그아웃이 실패했습니다."); window.location.href="/";</script>',
-      );
-    else return res.redirect('/');
+    await this.authService.KakaoLogout();
+    res.redirect('/');
+  }
+
+  @Get('google/login')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin() {}
+
+  @Get('google/logout')
+  async logout(@Session() session: Record<string, any>, @Res() res) {
+    session.destroy();
+    res.redirect('/');
+  }
+
+  @Get('session')
+  async session(@Req() req: Request, @Res() res: Response) {
+    console.log(req.session);
+    return res.redirect('/');
   }
 }

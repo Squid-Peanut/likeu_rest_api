@@ -9,9 +9,12 @@ import { NoticeModule } from './notice/notice.module';
 // import { KakaoModule } from './kakao/kakao.module';
 import { AuthModule } from './auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
+import { PassportModule } from '@nestjs/passport';
+import * as passport from 'passport';
 
 @Module({
   imports: [
+    PassportModule.register({ session: true }),
     HttpModule,
     UsersModule,
     ConfigModule.forRoot(),
@@ -23,10 +26,24 @@ import { HttpModule } from '@nestjs/axios';
       inject: [ConfigService],
     }),
     NoticeModule,
-    // KakaoModule,
     AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    passport.serializeUser((user: any, done) => {
+      const name = user.firstName + user.lastName;
+      done(null, name); // 사용자 ID만 세션에 저장
+    });
+
+    passport.deserializeUser(async (name: string, done) => {
+      try {
+        done(null, name);
+      } catch (error) {
+        done(error);
+      }
+    });
+  }
+}

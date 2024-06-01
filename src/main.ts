@@ -3,6 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as express from 'express';
 import * as path from 'path';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +13,22 @@ async function bootstrap() {
     origin: true, // true 시 모든 url에 개방(개발 환경). 특정 url만 허용할 수 있음(배포 환경)
     credentials: true, // 프론트에서 credentials 설정을 true 해주었기 때문
   });
+
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: false,
+      // cookie: {
+      //   httpOnly: true,
+      //   secure: false, // true if you use https
+      //   maxAge: 60000, // Example: 1 minute
+      // },
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   app.use(
     '/static',

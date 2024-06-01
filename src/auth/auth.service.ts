@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { GoogleRequest } from './dto/auth.googleuser.dto';
 
 @Injectable()
 export class AuthService {
@@ -39,15 +40,26 @@ export class AuthService {
   }
 
   async KakaoLogout() {
+    console.log(this.accessToken);
     const logoutUrl = `https://kapi.kakao.com/v1/user/unlink`;
     const accessHeader = {
-      //   'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Bearer ${this.accessToken}`,
     };
-    const result = await firstValueFrom(
-      this.httpService.post(logoutUrl, '', { headers: accessHeader }),
+    await firstValueFrom(
+      this.httpService.post(logoutUrl, '', {
+        headers: accessHeader,
+      }),
     );
-    if (result.status == 200) return true;
-    else return false;
+    this.accessToken = '';
+  }
+
+  async googleLogin(req: GoogleRequest) {
+    // const res = payload;
+    const { user } = req;
+    const result = {
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+    };
+    return result;
   }
 }
