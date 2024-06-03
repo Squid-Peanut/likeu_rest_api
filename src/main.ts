@@ -5,6 +5,7 @@ import * as express from 'express';
 import * as path from 'path';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,8 @@ async function bootstrap() {
     origin: true, // true 시 모든 url에 개방(개발 환경). 특정 url만 허용할 수 있음(배포 환경)
     credentials: true, // 프론트에서 credentials 설정을 true 해주었기 때문
   });
+
+  app.use(cookieParser());
 
   app.use(
     session({

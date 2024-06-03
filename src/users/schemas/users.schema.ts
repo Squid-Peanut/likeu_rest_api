@@ -1,30 +1,56 @@
-// /src/user/schema/user.schema.ts
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 // MongoDB의 가장 작은 단위가 Document, 모듈에서 사용할 타입을 export 시켜줌
 export type UserDocument = User & Document;
 
+@Schema()
+export class Similarity {
+  @Prop()
+  similarity: string[];
+}
+@Schema()
+export class SimilarityPerDate {
+  @Prop()
+  date: string[];
+
+  @Prop()
+  similarity: string[];
+}
+
+@Schema()
+export class Data {
+  @Prop()
+  similarity_per_date: SimilarityPerDate;
+
+  @Prop()
+  star_player: string[];
+}
 @Schema({ timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class User {
   @Prop({ unique: true })
-  id: number;
+  providerId: number;
+
+  @Prop({ unique: true })
+  provider: string;
 
   @Prop()
-  description: string;
+  userName: string;
 
   @Prop()
-  price: number;
+  email: string;
 
   @Prop()
-  imageUrl: string[];
+  data: Data;
 
-  // id: '1',
-  //       title: 'Node.js 101',
-  //       description: '웹 개발로 알아보는 백엔드 자바스크립트의 이해',
-  //       price: 20000,
-  //       courseImg: '',
+  @Prop()
+  accessToken: string;
+
+  @Prop()
+  kakaoAccessToken: string;
+
+  @Prop()
+  refreshToken: string;
 }
 
 // 위의 작성한 클래스를 바탕으로 Mongoose에서 사용하는 스키마 클래스를 만들어준다.

@@ -1,22 +1,29 @@
-import { Controller, Get, Query, Redirect, UseGuards } from '@nestjs/common';
+import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleAuthGuard } from './auth.gard';
+// import { GoogleAuthGuard } from './auth.gard';
+import { AuthGuard } from '@nestjs/passport';
+import { Response, Request } from 'express';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
-  @Redirect('/')
   @Get('kakao')
-  async getKakaoInfo(@Query() query: { code }) {
-    const apikey = process.env.KAKAO_API_KEY;
-    const redirectUri = process.env.KAKAO_CODE_REDIRECT_URI;
-    await this.authService.kakaoLogin(apikey, redirectUri, query.code);
-    await this.authService.KakaoUserInfo();
+  @Redirect('/')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoLoginCallback(@Res() res: Response, @Req() req: Request) {
+    return await this.authService.logIn(req, res);
+    // console.log(req.user);
   }
 
   @Get('google')
   @Redirect('/')
-  @UseGuards(GoogleAuthGuard)
-  async googleLoginCallback() {}
+  @UseGuards(AuthGuard('google'))
+  async googleLoginCallback(@Res() res: Response, @Req() req: Request) {
+    return await this.authService.logIn(req, res);
+  }
 }

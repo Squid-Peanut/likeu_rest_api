@@ -11,10 +11,12 @@ import { AuthModule } from './auth/auth.module';
 import { HttpModule } from '@nestjs/axios';
 import { PassportModule } from '@nestjs/passport';
 import * as passport from 'passport';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    PassportModule.register({ session: true }),
+    JwtModule.register({ global: true }),
+    PassportModule.register({ global: true }),
     HttpModule,
     UsersModule,
     ConfigModule.forRoot(),

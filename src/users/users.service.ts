@@ -60,35 +60,85 @@ export class UsersService {
     return result;
   }
 
-  async postUsers(
-    description: string,
-    price: number,
-    file: any[],
-  ): Promise<any> {
-    const imageUrl: string[] = [];
-    let id = (await this.userModel.find().lean()).length;
-    id += 1;
-    for (let i = 0; i < file.length; i++) {
-      imageUrl.push(`${process.env.HOST_URL}/users/${file[i].originalname}`);
-    }
+  async findOne(provider: string, providerId: number) {
+    const result = await this.userModel
+      .findOne({ provider }, { providerId })
+      .lean();
+    return result;
+  }
 
-    console.log(imageUrl);
+  async findOneAsToken(cookie) {
+    const accessToken = cookie.accessToken;
+    const result = await this.userModel.findOne({ accessToken }).lean();
+    return result;
+  }
 
+  async create(user) {
+    const { provider, providerId, firstName, lastName, userName, email } = user;
     const result = await this.userModel.create({
-      id,
-      description,
-      price,
-      imageUrl,
+      provider,
+      providerId,
+      userName: userName ? userName : firstName + lastName,
+      email,
+      data: { similarity_per_date: {} },
     });
     if (!result) throw new NotFoundException();
     return result;
   }
 
-  async updateUsers(
-    id: number,
-    description: string,
-    price: number,
-  ): Promise<any> {
-    return await this.userModel.updateOne({ id }, { description, price });
+  async tokenSave(
+    provider: string,
+    providerId: number,
+    accessToken: string,
+    kakaoAccessToken: string,
+    refreshToken: string,
+  ) {
+    const result = await this.userModel.findOneAndUpdate(
+      {
+        provider,
+        providerId,
+      },
+      { accessToken, kakaoAccessToken, refreshToken },
+    );
+    if (!result) throw new NotFoundException();
+    return result;
+  }
+
+  async findRefreshToken(refreshToken: string) {
+    const result = await this.userModel.findOne({ refreshToken }).lean();
+    if (!result) throw new NotFoundException();
+    return result;
+  }
+  async findAccessToken(accessToken: string) {
+    const result = await this.userModel.findOne({ accessToken }).lean();
+    if (!result) throw new NotFoundException();
+    return result;
+  }
+
+  async saveAccessToken(
+    provider: string,
+    providerId: number,
+    accessToken: string,
+  ) {
+    const result = await this.userModel
+      .findOneAndUpdate(
+        {
+          provider,
+          providerId,
+        },
+        { accessToken },
+      )
+      .lean();
+    if (!result) throw new NotFoundException();
+    return result;
+    // }
+  }
+
+  async deleteToken(cookie) {
+    const { refreshToken } = cookie;
+    await this.userModel.findOneAndUpdate(
+      { refreshToken },
+      { accessToken: '', refreshToken: '', kakaoAccessToken: '' },
+    );
   }
 }
