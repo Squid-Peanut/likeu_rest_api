@@ -6,26 +6,6 @@ export class AppService {
     const defult = `\
     <h1>Rest API 테스트 사이트 입니다.</h1> \
     <br><br>\
-    <h2>Create users data</h2>\
-    <form method="post" action="/input_user" enctype="multipart/form-data">\
-    description \
-    <input type="text" name="description"><br>\
-    price \
-    <input type="text" name="price"> <br>\
-    Image file\
-    <input type="file" name="file" accept="image/png, image/jpeg" multiple><br>\
-    <input type="submit">\
-    </form><br><br>\
-    <h2>Update users data</h2>\
-    <form method="post" action="/update_user">\
-    id\
-    <input type="text" name="id"><br>\
-    description \
-    <input type="text" name="description"><br>\
-    price \
-    <input type="text" name="price"> <br>\
-    <input type="submit">\
-    </form><br><br>\
     <h2>Create notice data</h2>\
     <form method="post" action="/input_notice" enctype="multipart/form-data">\
     title \
