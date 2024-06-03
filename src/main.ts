@@ -3,8 +3,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as express from 'express';
 import * as path from 'path';
-import * as session from 'express-session';
-import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
@@ -16,22 +14,6 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-
-  app.use(
-    session({
-      secret: 'my-secret',
-      resave: false,
-      saveUninitialized: false,
-      // cookie: {
-      //   httpOnly: true,
-      //   secure: false, // true if you use https
-      //   maxAge: 60000, // Example: 1 minute
-      // },
-    }),
-  );
-
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   app.use(
     '/static',

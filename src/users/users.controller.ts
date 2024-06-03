@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -6,47 +6,40 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  findAll(
-    @Query('id') id: string,
-    @Query('description') description: string,
-    @Query('price') price: number,
-    @Query('imageUrl') imageUrl: string,
-  ) {
-    if (
-      id != undefined &&
-      description == undefined &&
-      price == undefined &&
-      imageUrl == undefined
-    )
-      return this.usersService.getUser_id(id);
-    else if (
-      id == undefined &&
-      description != undefined &&
-      price == undefined &&
-      imageUrl == undefined
-    )
-      return this.usersService.getUser_description(description);
-    else if (
-      id == undefined &&
-      description == undefined &&
-      price != undefined &&
-      imageUrl == undefined
-    )
-      return this.usersService.getUser_price(price);
-    else if (
-      id == undefined &&
-      description != undefined &&
-      price != undefined &&
-      imageUrl == undefined
-    )
-      return this.usersService.getUser_description_price(description, price);
-    else if (
-      id != undefined &&
-      description == undefined &&
-      price == undefined &&
-      imageUrl != undefined
-    )
-      return this.usersService.getUser_imageUrl(id, imageUrl);
-    else return this.usersService.getUsers();
+  async findAll() {
+    return this.usersService.getUsers();
+  }
+  @Get('id/:providerId')
+  async getUser_id(@Param('providerId') providerId) {
+    return await this.usersService.getUser_id(providerId);
+  }
+
+  @Get('data/:providerId')
+  async getUser_data(@Param('providerId') providerId) {
+    const parameter = 'date';
+    return await this.usersService.getUser_detail(providerId, parameter);
+  }
+  @Get('data/similarity_per_date/:providerId')
+  async getUser_similarity_per_date(@Param('providerId') providerId) {
+    const parameter = 'similarity_per_date';
+    return await this.usersService.getUser_detail(providerId, parameter);
+  }
+
+  @Get('data/similarity_per_date/date/:providerId')
+  async getUser_date(@Param('providerId') providerId) {
+    const parameter = 'date';
+    return await this.usersService.getUser_detail(providerId, parameter);
+  }
+
+  @Get('data/similarity_per_date/similarity/:providerId')
+  async getUser_similarity(@Param('providerId') providerId) {
+    const parameter = 'similarity';
+    return await this.usersService.getUser_detail(providerId, parameter);
+  }
+
+  @Get('data/star_player/:providerId')
+  async getUser_star_player(@Param('providerId') providerId) {
+    const parameter = 'star_player';
+    return await this.usersService.getUser_detail(providerId, parameter);
   }
 }

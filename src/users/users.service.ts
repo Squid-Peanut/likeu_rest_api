@@ -7,55 +7,39 @@ import { User, UserDocument } from './schemas/users.schema';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async getUser_id(id: string): Promise<any> {
-    const result = await this.userModel.find({ id }).select('-_id -__v').lean();
-    if (!result) throw new NotFoundException();
-    return result;
-  }
-
-  async getUser_description(description: string): Promise<any> {
+  async getUser_id(providerId: string): Promise<any> {
     const result = await this.userModel
-      .find({ description })
-      .select('-_id -__v')
+      .find({ providerId })
+      .select('-_id -__v -accessToken -kakaoAccessToken -refreshToken')
       .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
-  async getUser_price(price: number): Promise<any> {
+  async getUser_detail(providerId: string, parameter: string): Promise<any> {
+    const number = parseInt(providerId);
     const result = await this.userModel
-      .find({ price })
-      .select('-_id -__v')
+      .find({ providerId: number })
+      .select(`-_id ${parameter}`)
       .lean();
     if (!result) throw new NotFoundException();
     return result;
   }
 
-  async getUser_description_price(
-    description: string,
-    price: number,
-  ): Promise<any> {
+  async getUser_star_player(providerId: string): Promise<any> {
+    const number = parseInt(providerId);
     const result = await this.userModel
-      .find({ description, price })
-      .select('-_id -__v')
+      .find({ providerId: number })
+      .select('-_id star_player')
       .lean();
     if (!result) throw new NotFoundException();
     return result;
-  }
-
-  async getUser_imageUrl(id: string, imageUrl: string): Promise<any> {
-    if (imageUrl == 'true') {
-      const result = await this.userModel
-        .find({ id })
-        .select('-_id imageUrl')
-        .lean();
-      if (!result) throw new NotFoundException();
-      return result;
-    } else throw new NotFoundException();
   }
 
   async getUsers(): Promise<any> {
-    const result = await this.userModel.find().select('-_id -__v').lean();
+    const result = await this.userModel
+      .find()
+      .select('-_id -__v -accessToken -kakaoAccessToken -refreshToken');
     if (!result) throw new NotFoundException();
     return result;
   }

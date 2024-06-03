@@ -10,15 +10,20 @@ Nest.js를 이용해서 Rest API를 구축
 
 /users 로 접속시 users에 대한 모든 데이터 출력
 
-- 쿼리 스트링
+- id는 /users에서 나온 providerId를 뜻한다.
+- 사용법
   - id(number) : 해당 아이디의 데이터 검색
-    - ex) /users?id=1 또는 /users/?id=1
-  - description(string) : 해당 description의 데이터 검색
-    - ex) /users?description=hello 또는 /users/?description=hello
-  - price(number) : 해당 가격의 데이터 검색
-    - ex) /users?price=5000 또는 /users/?price=hello
-  - imageUrl(boolean) : 사진경로만 검색
-    - ex) /users?id=1&imageUrl=true 또는 /users/?id=1&imageUrl=true
+    - ex) /users/id/1
+  - data(number) : 해당하는 아이디에서 data의 데이터 검색
+    - ex) /users/data/1
+  - similarity_per_date(number) : 해당하는 아이디에서 similarity_per_date의 데이터 검색
+    - ex) /users/similarity_per_date/1
+  - date(number) : 해당하는 아이디에서 date의 데이터 검색
+    - ex) /users/similarity_per_date/date/1
+  - similarity(number) : 해당하는 아이디에서 similarity의 데이터 검색
+    - ex) /users/similarity_per_date/similarity/1
+  - star_player(number) : 해당하는 아이디에서 star_player의 데이터 검색
+    - ex) /users/star_player/1
 
 ### /notice
 
@@ -27,10 +32,10 @@ Nest.js를 이용해서 Rest API를 구축
 - 사용법
   - id(숫자, number) 검색
     - 해당 id를 검색
-    - ex) http://13.125.195.45:3000/notice/id/1
+    - ex) /notice/id/1
   - title(문자형, string) 검색
     - 해당 title을 검색
-    - ex) http://13.125.195.45:3000/notice/title/테스트제목
+    - ex) /notice/title/테스트제목
   - imageUrl(숫자, number) 검색
     - 해당 ImageUrl을 검색, 입력값은 id를 입력함
-    - ex) http://13.125.195.45:3000/notice/imageUrl/1
+    - ex) /notice/imageUrl/1
