@@ -39,7 +39,7 @@ export class UsersService {
   async getUsers(): Promise<any> {
     const result = await this.userModel
       .find()
-      .select('-_id -__v -accessToken -kakaoAccessToken -refreshToken');
+      .select(' -_id -__v -accessToken -kakaoAccessToken -refreshToken');
     if (!result) throw new NotFoundException();
     return result;
   }
@@ -58,11 +58,12 @@ export class UsersService {
   }
 
   async create(user) {
-    const { provider, providerId, firstName, lastName, userName, email } = user;
+    const { provider, providerId, firstName, lastName, userName, image, email } = user;
     const result = await this.userModel.create({
       provider,
       providerId,
       userName: userName ? userName : firstName + lastName,
+      image,
       email,
       data: { similarity_per_date: {} },
     });

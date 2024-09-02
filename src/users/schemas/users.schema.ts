@@ -38,6 +38,9 @@ export class User {
   userName: string;
 
   @Prop()
+  image: string;
+
+  @Prop()
   email: string;
 
   @Prop()
