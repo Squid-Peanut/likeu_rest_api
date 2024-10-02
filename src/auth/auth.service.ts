@@ -46,8 +46,21 @@ export class AuthService {
     });
   }
 
-  async createToken(req) {
-    const { user } = req;
+  async logIn_test(user,) {
+    // console.log(user);
+    const token = await this.createToken(user);
+    return token
+    // res.setHeader('Authorization', 'Bearer ' + Object.values(token));
+    // res.cookie('accessToken', token.accessToken, {
+    //   maxAge: this.tenMinuit, // 24시간 (초 단위)
+    //   httpOnly: true,
+    // });
+    // res.cookie('refreshToken', token.refreshToken, {
+    //   httpOnly: true,
+    // });
+  }
+
+  async createToken(user) {
 
     // 유저 인증 및 토큰 발급
     const accessToken = await this.createAccessToken(user.provider, user.name);
