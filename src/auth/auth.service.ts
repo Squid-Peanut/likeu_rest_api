@@ -34,7 +34,6 @@ export class AuthService {
   };
 
   async logIn(req, res) {
-    // console.log(req.user);
     const token = await this.createToken(req);
     res.setHeader('Authorization', 'Bearer ' + Object.values(token));
     res.cookie('accessToken', token.accessToken, {
@@ -46,21 +45,34 @@ export class AuthService {
     });
   }
 
-  async logIn_test(user,) {
-    // console.log(user);
-    const token = await this.createToken(user);
+  async logIn_test(user) {
+    console.log(user);
+    const token = await this.createTokenMobile(user);
     return token
-    // res.setHeader('Authorization', 'Bearer ' + Object.values(token));
-    // res.cookie('accessToken', token.accessToken, {
-    //   maxAge: this.tenMinuit, // 24시간 (초 단위)
-    //   httpOnly: true,
-    // });
-    // res.cookie('refreshToken', token.refreshToken, {
-    //   httpOnly: true,
-    // });
   }
 
-  async createToken(user) {
+  async createToken(req) {
+    const { user } = req;
+
+    // 유저 인증 및 토큰 발급
+    const accessToken = await this.createAccessToken(user.provider, user.name);
+    const refreshToken = await this.createRefreshToken(user.providerId);
+
+    await this.userService.tokenSave(
+      user.provider,
+      user.providerId,
+      accessToken,
+      user.kakaoAccessToken,
+      refreshToken,
+    );
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async createTokenMobile(user) {
 
     // 유저 인증 및 토큰 발급
     const accessToken = await this.createAccessToken(user.provider, user.name);

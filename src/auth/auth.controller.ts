@@ -29,8 +29,8 @@ export class AuthController {
   }
 
   @Post('google/mobile')
-  async googleLogin(@Res() res: Response, @Body('userInfo') userInfo: any) {
-    // console.log(userInfo)
+  async googleLogin(@Res() res: Response,@Req() req:Request, @Body('userInfo') userInfo: any) {
+    console.log(userInfo)
     const user = {
       provider: 'google',
       providerId: userInfo.data.user.id,
@@ -52,5 +52,4 @@ export class AuthController {
 
     return res.status(200).json(Token);
   }
-    // return await this.authService.logIn(req, res);
 }
