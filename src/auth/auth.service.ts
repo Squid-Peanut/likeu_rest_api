@@ -45,8 +45,7 @@ export class AuthService {
     });
   }
 
-  async logIn_test(user) {
-    console.log(user);
+  async logInMobile(user) {
     const token = await this.createTokenMobile(user);
     return token
   }
@@ -55,7 +54,7 @@ export class AuthService {
     const { user } = req;
 
     // 유저 인증 및 토큰 발급
-    const accessToken = await this.createAccessToken(user.provider, user.name);
+    const accessToken = await this.createAccessToken(user.provider, user.userName);
     const refreshToken = await this.createRefreshToken(user.providerId);
 
     await this.userService.tokenSave(
@@ -75,7 +74,7 @@ export class AuthService {
   async createTokenMobile(user) {
 
     // 유저 인증 및 토큰 발급
-    const accessToken = await this.createAccessToken(user.provider, user.name);
+    const accessToken = await this.createAccessToken(user.provider, user.userName);
     const refreshToken = await this.createRefreshToken(user.providerId);
 
     await this.userService.tokenSave(

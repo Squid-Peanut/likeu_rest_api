@@ -58,11 +58,11 @@ export class UsersService {
   }
 
   async create(user) {
-    const { provider, providerId, firstName, lastName, userName, image, email } = user;
+    const { provider, providerId, userName, image, email } = user;
     const result = await this.userModel.create({
       provider,
       providerId,
-      userName: userName ? userName : firstName + lastName,
+      userName: userName,
       image,
       email,
       data: { similarity_per_date: {} },

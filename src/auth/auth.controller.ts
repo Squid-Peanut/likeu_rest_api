@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Redirect, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, ConsoleLogger, Controller, Get, Post, Redirect, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 // import { GoogleAuthGuard } from './auth.gard';
 import { AuthGuard } from '@nestjs/passport';
@@ -21,6 +21,28 @@ export class AuthController {
     // console.log(req.user);
   }
 
+  @Post('kakao/mobile')
+  async kakaoLogin(@Res() res: Response,@Req() req:Request, @Body('userInfo') userInfo: any) {
+    const user = {
+      provider: 'kakao',
+      providerId: userInfo.id,
+      email: userInfo.email,
+      userName: userInfo.nickname,
+      image: userInfo.profileImageUrl
+    };
+
+    const find = await this.userService.findOne(
+      user.provider,
+      user.providerId,
+    );
+
+    if (!find) await this.userService.create(user);
+    
+    const Token = await this.authService.logInMobile(user);
+
+    return res.status(200).json(Token);
+  }
+
   @Get('google')
   @Redirect('/')
   @UseGuards(AuthGuard('google'))
@@ -30,13 +52,13 @@ export class AuthController {
 
   @Post('google/mobile')
   async googleLogin(@Res() res: Response,@Req() req:Request, @Body('userInfo') userInfo: any) {
-    console.log(userInfo)
+    const firstName= userInfo.data.user.familyName
+    const lastName= userInfo.data.user.givenName
     const user = {
       provider: 'google',
       providerId: userInfo.data.user.id,
       email: userInfo.data.user.email,
-      firstName: userInfo.data.user.familyName,
-      lastName: userInfo.data.user.givenName,
+      userName: firstName+lastName,
       image: userInfo.data.user.photo
     };
 
@@ -47,8 +69,7 @@ export class AuthController {
 
     if (!find) await this.userService.create(user);
     
-    const Token = await this.authService.logIn_test(user);
-    console.log(Token)
+    const Token = await this.authService.logInMobile(user);
 
     return res.status(200).json(Token);
   }
